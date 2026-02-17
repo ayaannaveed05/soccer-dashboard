@@ -1,0 +1,119 @@
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import useStore from '../store'
+
+export default function Register() {
+  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { login } = useStore()
+  const navigate = useNavigate()
+
+  const handleRegister = async () => {
+    if (!email || !username || !password) return
+    setLoading(true)
+    setError('')
+
+    try {
+      const res = await axios.post('http://localhost:8000/api/auth/register', {
+        email,
+        username,
+        password
+      })
+      login(res.data.user, res.data.access_token)
+      navigate('/')
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Registration failed')
+    }
+    setLoading(false)
+  }
+
+  return (
+    <div style={{ maxWidth: '400px', margin: '5rem auto', padding: '0 2rem' }}>
+      <h1 style={{
+        fontFamily: 'Bebas Neue',
+        fontSize: '3rem',
+        letterSpacing: '2px',
+        marginBottom: '0.5rem'
+      }}>
+        REGISTER
+      </h1>
+      <p style={{ color: '#888', marginBottom: '2rem' }}>
+        Already have an account? <Link to="/login" style={{ color: '#00ff87' }}>Login</Link>
+      </p>
+
+      {error && (
+        <p style={{
+          color: '#ff4444', background: '#1a0000',
+          border: '1px solid #ff4444', padding: '0.75rem 1rem',
+          marginBottom: '1rem', fontSize: '0.9rem'
+        }}>
+          {error}
+        </p>
+      )}
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div>
+          <label style={{ color: '#888', fontSize: '0.8rem', letterSpacing: '2px', display: 'block', marginBottom: '0.5rem' }}>
+            EMAIL
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            style={{
+              background: '#111', border: '1px solid #222', color: '#fff',
+              padding: '0.75rem 1rem', fontSize: '1rem', width: '100%', outline: 'none'
+            }}
+          />
+        </div>
+
+        <div>
+          <label style={{ color: '#888', fontSize: '0.8rem', letterSpacing: '2px', display: 'block', marginBottom: '0.5rem' }}>
+            USERNAME
+          </label>
+          <input
+            type="text"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            style={{
+              background: '#111', border: '1px solid #222', color: '#fff',
+              padding: '0.75rem 1rem', fontSize: '1rem', width: '100%', outline: 'none'
+            }}
+          />
+        </div>
+
+        <div>
+          <label style={{ color: '#888', fontSize: '0.8rem', letterSpacing: '2px', display: 'block', marginBottom: '0.5rem' }}>
+            PASSWORD
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleRegister()}
+            style={{
+              background: '#111', border: '1px solid #222', color: '#fff',
+              padding: '0.75rem 1rem', fontSize: '1rem', width: '100%', outline: 'none'
+            }}
+          />
+        </div>
+
+        <button
+          onClick={handleRegister}
+          disabled={loading}
+          style={{
+            background: '#00ff87', color: '#000', border: 'none',
+            padding: '0.75rem', fontWeight: 700, fontSize: '0.9rem',
+            letterSpacing: '1px', cursor: 'pointer', marginTop: '0.5rem'
+          }}
+        >
+          {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT →'}
+        </button>
+      </div>
+    </div>
+  )
+}

@@ -1,28 +1,77 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
+/* Import fonts used across the app:
+   - Inter: main UI font (multiple weights)
+   - Bebas Neue: display/branding font (optional headings) */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
 
-* {
+/* Global reset:
+   - border-box makes sizing predictable
+   - remove default margins/padding applied by browsers */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
+/* Theme variables (dark UI palette + utility colors) */
 :root {
-  --green: #00ff87;
-  --dark: #0a0a0a;
-  --card: #111111;
-  --border: #222222;
-  --text: #ffffff;
-  --muted: #888888;
+  --bg: #0d0d0d;               /* App background */
+  --surface: #161616;          /* Primary surface (cards/panels) */
+  --surface-2: #1e1e1e;        /* Secondary surface (nested sections) */
+  --border: #2a2a2a;           /* Standard borders/dividers */
+  --border-light: #222222;     /* Subtle border variant */
+  --text: #f0f0f0;             /* Primary text */
+  --text-secondary: #888888;   /* Secondary text */
+  --text-muted: #555555;       /* Muted/disabled text */
+  --green: #00ff87;            /* Positive / success */
+  --green-dim: #00cc6a;        /* Softer success */
+  --red: #ff4444;              /* Error / negative */
+  --orange: #ff8c00;           /* Warning / highlight */
+  --radius: 4px;               /* Default border radius */
 }
 
+/* Base typography settings and font smoothing */
+html {
+  font-size: 16px; /* 1rem baseline */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* App-level defaults */
 body {
-  background-color: var(--dark);
+  background: var(--bg);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
   min-height: 100vh;
 }
 
+/* Link styling reset (style links explicitly in components when needed) */
 a {
   text-decoration: none;
   color: inherit;
+}
+
+/* Ensure form elements use the same font as the rest of the UI */
+button {
+  font-family: 'Inter', sans-serif;
+}
+
+input, select {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Custom scrollbar styling (WebKit-based browsers: Chrome/Edge/Safari) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
 }
