@@ -15,8 +15,12 @@ load_dotenv()
 # Retrieve database connection URL from environment
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+if DATABASE_URL and DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 # Create SQLAlchemy engine
-engine = create_engine(DATABASE_URL)
+
 
 # Create a session factory for database interactions
 SessionLocal = sessionmaker(
