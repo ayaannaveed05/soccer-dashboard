@@ -16,7 +16,7 @@ Also shows live fixtures, league tables, and lets you save favourite teams if yo
 
 ## Screenshots
 
-[Add your screenshots here]
+[Add screenshots here]
 
 ---
 
