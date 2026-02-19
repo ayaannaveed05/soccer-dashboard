@@ -2,7 +2,7 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import teams, matches, predictions, auth, favourites
+from routers import teams, matches, predictions, auth, favourites, prediction_history
 from database import engine
 import models
 from pipeline import start_scheduler, run_pipeline, pipeline_status
@@ -30,6 +30,8 @@ app.include_router(matches.router, prefix="/api/matches", tags=["matches"])
 app.include_router(predictions.router, prefix="/api/predictions", tags=["predictions"])
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(favourites.router, prefix="/api/favourites", tags=["favourites"])
+app.include_router(prediction_history.router, prefix="/api/prediction-history", tags=["prediction-history"])
+
 
 
 @app.on_event("startup")

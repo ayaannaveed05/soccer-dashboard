@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { API_URL } from '../config'
+import useStore from '../store'
 
 // Reusable team autocomplete input
 function TeamInput({ label, value, onChange, teams }) {
@@ -130,6 +131,7 @@ export default function Predict() {
   const [loading, setLoading] = useState(false)
   const [teams, setTeams] = useState([])
   const [error, setError] = useState('')
+  const { token } = useStore()
 
   // Fetch list of valid teams for autocomplete (from model dataset)
   useEffect(() => {
@@ -139,38 +141,55 @@ export default function Predict() {
   // Main prediction handler:
   // - calls prediction endpoint + H2H endpoint in parallel
   // - updates UI with prediction, probabilities, and history
-  const handlePredict = async () => {
-    if (!homeTeam || !awayTeam) return
+const handlePredict = async () => {
+  if (!homeTeam || !awayTeam) return
+  setLoading(true)
+  setResult(null)
+  setH2h([])
+  setError('')
 
-    setLoading(true)
-    setResult(null)
-    setH2h([])
-    setError('')
+  try {
+    const [predRes, h2hRes] = await Promise.all([
+      axios.post(`${API_URL}/api/predictions/predict`, {
+        home_team: homeTeam,
+        away_team: awayTeam,
+      }),
+      axios.get(`${API_URL}/api/predictions/h2h`, {
+        params: { home_team: homeTeam, away_team: awayTeam }
+      })
+    ])
 
-    try {
-      const [predRes, h2hRes] = await Promise.all([
-        axios.post(`${API_URL}/api/predictions/predict`, {
-          home_team: homeTeam,
-          away_team: awayTeam,
-        }),
-        axios.get(`${API_URL}/api/predictions/h2h`, {
-          params: { home_team: homeTeam, away_team: awayTeam },
-        }),
-      ])
-
-      // Backend may return an "error" field for unsupported inputs (e.g. cross-league)
-      if (predRes.data.error) setError(predRes.data.error)
-      else {
-        setResult(predRes.data)
-        setH2h(h2hRes.data.matches)
+    if (predRes.data.error) {
+      setError(predRes.data.error)
+    } else {
+      setResult(predRes.data)
+      setH2h(h2hRes.data.matches)
+      
+      // Save prediction to history if user is logged in
+      if (token) {
+        try {
+          await axios.post(`${API_URL}/api/prediction-history/`, null, {
+            params: {
+              home_team: homeTeam,
+              away_team: awayTeam,
+              predicted_outcome: predRes.data.prediction,
+              home_win_prob: predRes.data.probabilities.home_win,
+              draw_prob: predRes.data.probabilities.draw,
+              away_win_prob: predRes.data.probabilities.away_win
+            },
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        } catch (err) {
+          // Silently fail - don't break prediction if history save fails
+          console.log('Failed to save prediction history')
+        }
       }
-    } catch {
-      // General fallback error message
-      setError('Team not found. Please select a team from the suggestions.')
     }
-
-    setLoading(false)
+  } catch (err) {
+    setError('Team not found. Please select a team from the suggestions.')
   }
+  setLoading(false)
+}
 
   // Color mapping for H2H result badge (W/L/D)
   const resultBadgeColor = (r) => (r === 'W' ? '#00ff87' : r === 'L' ? '#ff4444' : '#555')

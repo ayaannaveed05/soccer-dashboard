@@ -9,6 +9,8 @@ import Favourites from './pages/Favourites'
 import Standings from './pages/Standings'
 import HowItWorks from './pages/HowItWorks'
 import NotFound from './pages/NotFound'
+import PredictionHistory from './pages/PredictionHistory'
+
 
 export default function App() {
   return (
@@ -24,6 +26,7 @@ export default function App() {
         <Route path="/standings" element={<Standings />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/history" element={<PredictionHistory />} />
       </Routes>
     </div>
   )

@@ -70,6 +70,7 @@ export default function Navbar() {
           { path: '/predict', label: 'Predict' },
           { path: '/how-it-works', label: 'How It Works' },
           { path: '/favourites', label: 'Favourites' },
+          { path: '/history', label: 'History' },
         ].map(({ path, label }) => (
           <Link
             key={path}
