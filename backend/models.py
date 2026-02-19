@@ -6,10 +6,8 @@ Defines table schemas and relationships using SQLAlchemy ORM.
 from sqlalchemy import Column, Integer, String, Boolean, Float, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-
+from datetime import datetime
 from database import Base
-
-
 
 class User(Base):
     """
