@@ -16,7 +16,13 @@ Also shows live fixtures, league tables, and lets you save favourite teams if yo
 
 ## Screenshots
 
-[Add screenshots here]
+![Home Page](screenshot-home.png)
+
+![Match Predictions](screenshot-predict.png)
+
+![Prediction History](screenshot-history.png)
+
+![League Standings](screenshot-standings.png)
 
 ---
 
