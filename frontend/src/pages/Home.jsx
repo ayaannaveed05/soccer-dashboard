@@ -1,3 +1,4 @@
+import { API_URL } from '../config'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -15,8 +16,8 @@ export default function Home() {
   useEffect(() => {
     // Run both API requests in parallel for faster load time
     Promise.all([
-      axios.get('http://localhost:8000/api/matches/upcoming'),
-      axios.get('http://localhost:8000/api/matches/recent'),
+      axios.get(`${API_URL}/api/matches/upcoming`),
+      axios.get(`${API_URL}/api/matches/recent`),
     ])
       .then(([upRes, reRes]) => {
         // Store results from backend

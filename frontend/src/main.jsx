@@ -1,20 +1,12 @@
-// React entry point for the application.
-// Responsible for mounting the app, enabling routing, and applying global settings.
-
+import { API_URL } from '../config'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ToastProvider } from './components/Toast'
 import axios from 'axios'
-
-
-// Global styles (theme, resets, fonts)
 import './index.css'
-
-// Root application component
 import App from './App.jsx'
 
-// Auto logout on expired token
 axios.interceptors.response.use(
   response => response,
   error => {
@@ -30,11 +22,8 @@ axios.interceptors.response.use(
   }
 )
 
-// Create the React root and render the application
 createRoot(document.getElementById('root')).render(
-  // StrictMode enables additional checks and warnings in development
   <StrictMode>
-    {/* BrowserRouter enables client-side routing throughout the app */}  
     <BrowserRouter>
       <ToastProvider>
         <App />

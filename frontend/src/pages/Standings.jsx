@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { API_URL } from '../config'
 
 // Supported competitions for tabs (football-data.org league codes)
 const LEAGUES = [
@@ -32,7 +33,7 @@ export default function Standings() {
     setLoading(true)
 
     axios
-      .get(`http://localhost:8000/api/matches/standings/${league}`)
+      .get(`${API_URL}/api/matches/standings/${league}`)
       .then((res) => {
         // Backend returns:
         // - standings (array) for most leagues

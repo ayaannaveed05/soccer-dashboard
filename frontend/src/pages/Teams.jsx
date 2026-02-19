@@ -3,6 +3,7 @@ import axios from 'axios'
 import useStore from '../store'
 import { SkeletonTeamCard } from '../components/Skeleton'
 import { useToast } from '../components/Toast'
+import { API_URL } from '../config'
 
 export default function Teams() {
   const [teams, setTeams] = useState([])
@@ -14,7 +15,7 @@ export default function Teams() {
   const { addToast } = useToast()
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/teams/')
+    axios.get('${API_URL}/api/teams/')
       .then((res) => { setTeams(res.data.teams); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])
@@ -30,7 +31,7 @@ export default function Teams() {
     setFavouriting(team.id)
     try {
       await axios.post(
-        'http://localhost:8000/api/favourites/',
+        `${API_URL}/api/favourites/`,
         { team_id: team.id, team_name: team.name, team_crest: team.crest, team_league: team.league },
         { headers: { Authorization: `Bearer ${token}` } }
       )

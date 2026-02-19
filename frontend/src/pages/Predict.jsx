@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
+import { API_URL } from '../config'
 
 // Reusable team autocomplete input
 function TeamInput({ label, value, onChange, teams }) {
@@ -132,7 +133,7 @@ export default function Predict() {
 
   // Fetch list of valid teams for autocomplete (from model dataset)
   useEffect(() => {
-    axios.get('http://localhost:8000/api/predictions/teams').then((res) => setTeams(res.data.teams))
+    axios.get('${API_URL}/api/predictions/teams').then((res) => setTeams(res.data.teams))
   }, [])
 
   // Main prediction handler:

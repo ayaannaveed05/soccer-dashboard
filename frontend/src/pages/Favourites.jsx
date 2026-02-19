@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import useStore from '../store'
+import { API_URL } from '../config'
 
 export default function Favourites() {
   // List of favourited teams for the current user
@@ -19,7 +20,7 @@ export default function Favourites() {
     if (!token) return
 
     axios
-      .get('http://localhost:8000/api/favourites/', {
+      .get('${API_URL}/api/favourites/', {
         // Bearer token required by backend auth dependency
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -36,7 +37,7 @@ export default function Favourites() {
   // Remove a favourite team for the logged-in user
   const removeFavourite = async (teamId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/favourites/${teamId}`, {
+      await axios.delete(`${API_URL}/api/favourites/${teamId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
 
