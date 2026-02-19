@@ -20,7 +20,7 @@ export default function Favourites() {
     if (!token) return
 
     axios
-      .get('${API_URL}/api/favourites/', {
+      .get(`${API_URL}/api/favourites/`, {
         // Bearer token required by backend auth dependency
         headers: { Authorization: `Bearer ${token}` },
       })
