@@ -15,7 +15,10 @@ app = FastAPI(title="Soccer Dashboard API", version="1.0.0")
 # Allow React frontend to talk to backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "https://spirited-endurance-production.up.railway.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
