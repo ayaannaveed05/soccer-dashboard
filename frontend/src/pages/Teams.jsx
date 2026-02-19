@@ -15,7 +15,7 @@ export default function Teams() {
   const { addToast } = useToast()
 
   useEffect(() => {
-    axios.get('${API_URL}/api/teams/')
+    axios.get(`${API_URL}/api/teams/`)
       .then((res) => { setTeams(res.data.teams); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])

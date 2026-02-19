@@ -133,7 +133,7 @@ export default function Predict() {
 
   // Fetch list of valid teams for autocomplete (from model dataset)
   useEffect(() => {
-    axios.get('${API_URL}/api/predictions/teams').then((res) => setTeams(res.data.teams))
+    axios.get(`${API_URL}/api/predictions/teams`).then((res) => setTeams(res.data.teams))
   }, [])
 
   // Main prediction handler:
@@ -149,11 +149,11 @@ export default function Predict() {
 
     try {
       const [predRes, h2hRes] = await Promise.all([
-        axios.post('http://localhost:8000/api/predictions/predict', {
+        axios.post(`${API_URL}/api/predictions/predict`, {
           home_team: homeTeam,
           away_team: awayTeam,
         }),
-        axios.get('http://localhost:8000/api/predictions/h2h', {
+        axios.get(`${API_URL}/api/predictions/h2h`, {
           params: { home_team: homeTeam, away_team: awayTeam },
         }),
       ])
